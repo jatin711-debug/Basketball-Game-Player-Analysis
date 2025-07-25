@@ -70,8 +70,8 @@ class BasketballAnalyzer:
     """Main basketball analysis system"""
     
     def __init__(self, 
-                 yolo_model_path: str = "./models/yolo11n.pt",
-                 sam_model_path: str = "./models/sam2.1_b.pt",
+                 yolo_model_path: str = "./models/yolo11x.pt",
+                 sam_model_path: str = "./models/sam2.1_l.pt",
                  custom_model_path: str = "./runs/detect/train9/weights/best.pt",
                  device: str = "auto"):
         

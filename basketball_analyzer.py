@@ -724,8 +724,26 @@ class BasketballAnalyzer:
     
     def save_analysis(self, analysis: Dict[str, Any], output_path: str):
         """Save analysis results to file"""
+        def convert_numpy_types(obj):
+            """Convert numpy types to native Python types for JSON serialization"""
+            if isinstance(obj, np.integer):
+                return int(obj)
+            elif isinstance(obj, np.floating):
+                return float(obj)
+            elif isinstance(obj, np.ndarray):
+                return obj.tolist()
+            elif isinstance(obj, dict):
+                return {str(k): convert_numpy_types(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_numpy_types(item) for item in obj]
+            else:
+                return obj
+        
+        # Convert the analysis to JSON-serializable format
+        serializable_analysis = convert_numpy_types(analysis)
+        
         with open(output_path, 'w') as f:
-            json.dump(analysis, f, indent=2, default=str)
+            json.dump(serializable_analysis, f, indent=2, default=str)
         logger.info(f"Analysis saved to: {output_path}")
     
     def export_player_stats_csv(self, output_path: str):
